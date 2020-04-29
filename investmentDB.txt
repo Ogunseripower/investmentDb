@@ -1,0 +1,68 @@
+Updated investment Database
+
+USE investment_db;
+
+CREATE TABLE insurance_companies
+(
+insurance_id CHAR(5) PRIMARY KEY,
+insurance_company VARCHAR(50) NOT NULL,
+contact_person VARCHAR(50) NOT NULL,
+contact_mobile VARCHAR(25) NOT NULL,
+contact_email VARCHAR(100) NOT NULL,
+rc_number VARCHAR(25) NOT NULL,
+head_office_location VARCHAR(50) NOT NULL,
+entry DATE 
+);
+
+CREATE TABLE investment_classes 
+(
+i_class_id char(5) primary key,
+i_class varchar(50) NOT NULL,
+i_class_desc text NOT NULL,
+entry_date date
+); 
+
+CREATE TABLE investment_types
+(
+i_type_id CHAR(5) PRIMARY KEY,
+i_class_id CHAR(5) NOT NULL, INDEX(i_class_id), FOREIGN KEY(i_class_id) REFERENCES investment_classes(i_class_id),
+i_type VARCHAR(50) NOT NULL,
+i_type_desc TEXT,
+entry_date DATE
+);
+
+CREATE TABLE investments
+(
+investment_id CHAR(15) PRIMARY KEY,
+i_class_id CHAR(5) NOT NULL, INDEX(i_class_id), FOREIGN KEY(i_class_id) REFERENCES investment_classes(i_class_id),
+i_type_id CHAR(5) NOT NULL, INDEX(i_type_id), FOREIGN KEY(i_type_id) REFERENCES investment_types(i_type_id),
+investment_desc TEXT,
+io_value DECIMAL NOT NULL,
+price_per_share DECIMAL NOT NULL,
+shares_outstanding INT NOT NULL,
+expected_return DECIMAL NOT NULL,
+offer_close_date DATE,
+maturity_date DATE,
+insurance_id CHAR(5) NOT NULL, INDEX(insurance_id), FOREIGN KEY(insurance_id) REFERENCES insurance_companies(insurance_id),
+payout_type VARCHAR(25) NOT NULL,
+entry_date DATE
+);
+
+
+
+CREATE TABLE option_penalties
+(
+penalty_id CHAR(5) PRIMARY KEY,
+penalty VARCHAR(25) NOT NULL,
+penalty_desc TEXT,
+entry_date DATE
+);
+
+CREATE TABLE liquidation_options
+(
+option_id CHAR(5) PRIMARY KEY,
+liquidation_option VARCHAR(25) NOT NULL,
+option_desc TEXT,
+penalty_id CHAR(5) NOT NULL, INDEX(penalty_id), FOREIGN KEY(penalty_id) REFERENCES option_penalties(penalty_id),
+entry_date DATE
+);
